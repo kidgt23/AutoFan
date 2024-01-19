@@ -1,7 +1,7 @@
-# AutoFan Project 
+# Project 
 The following repository is projects that are both personal and from school used for the purpose of education and learning. For the portfoilo website the actual website is not live so I have attached the code here and will attach some photos of the website.
 
-# Project
+#  Auto Fan Project
 I developed an automatic fan that activates based on specific air temperature and moisture levels, utilizing the Grove Beginner Kit, including the DHT 11 sensor and the OLED display. This project was inspired by a need for a cooler environment in my room and ideas from the Arduino start website and my past courses
 
 Context:
