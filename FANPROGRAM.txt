@@ -1,0 +1,59 @@
+#include "DHT.h" // Libary  
+#include <Arduino.h> //Libary 
+#include <U8x8lib.h> //Libary OLED
+
+#define TEMPERATURE 3 // define temp and pin
+#define MOSFET 2 // moftset and pin
+#define REDLED 4 // redled 4 pin  
+#define MOISTURE A1 // moisture A1 pin
+#define WET_THRESH 600 // Threshold 
+#define STOP 6 // stop program if needed (E-stop)
+#define DHTPIN 3 // DHT PIN   
+#define DHTTYPE DHT11   // DHT 11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+auto display = U8X8_SSD1306_128X64_NONAME_HW_I2C(U8X8_PIN_NONE); // display 
+int moistureV = 0; // intial  
+int TempV = 0; // intial
+int Stop = 0; // intial
+void setup() { // setup
+  pinMode(MOSFET, OUTPUT);  // setup...... Mofset output
+  pinMode(REDLED, OUTPUT); // red led output
+  digitalWrite(MOSFET, LOW); // this 
+  display.begin(); // begins
+  display.setFlipMode(1); //flips screen
+  display.clearDisplay(); // clear display
+  display.setFont(u8x8_font_profont29_2x3_r); // set font.
+}
+
+void loop(){ 
+ 
+  moistureV = analogRead(MOISTURE); // loop that reads and prints analogd read to OLED
+   display.setCursor(0,0); // set cursor
+   display.print("MOISTURE"); // what prints to screen
+   display.setCursor(0,5); // set cursor
+    display.print(String(moistureV));  // moistureV
+
+   TempV = analogRead(TEMPERATURE); // reads temp from D3
+   display.setCursor(0,0); // set cursor
+   //display.print("TEMP"); // display on OLED 
+   display.setCursor(0,5); // set cursor
+   display.print(String(TempV)); // for TempV
+   
+
+  if(TempV>= 20 && moistureV>= WET_THRESH) { // if statement
+    digitalWrite(MOSFET, HIGH);  // turns on mofset which turns on fan
+    digitalWrite(REDLED, HIGH); // turns on LED to confirm device in use
+  } else if (TempV<20 && moistureV< WET_THRESH) {
+digitalWrite(MOSFET,LOW);
+digitalWrite(REDLED,LOW);
+  } else if ( TempV>=20 && moistureV<= WET_THRESH) {
+  digitalWrite(MOSFET,LOW);
+digitalWrite(REDLED,LOW);
+  
+} else if (TempV<20 && moistureV< WET_THRESH) {
+ digitalWrite(MOSFET,LOW);
+digitalWrite(REDLED,LOW);
+}
+}
